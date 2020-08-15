@@ -1,27 +1,40 @@
 console.log('bot is starting');
-var Twit = require('twit');
+let Twit = require('twit');
 
-var config = require('./config');
-var T = new Twit(config);
+let config = require('./config');
+let T = new Twit(config);
 
-var nombre = 20*60;
-var id = 1;
-var status = "*Bip Bop* Je suis un robot, je lance ce compte à rebours à partir de 100 000 et je vous annonce que Charles aura minimum 1 million d'euros sur son compte avant que j'arrive à 0 \n \n (3 tweets/heure)"
+let time = 20*60;
+let id;
+let status = "*Bip Bop* Je suis un robot, je lance ce compte à rebours à partir de 100 000. Charles  s'est donné le défi de détenir plus d'un million d'euros sur son compte avant que j'arrive à 0. \\n\\n (j'enlève 1 toutes les 20 minutes)";
+let status_string = status;
+
+let constructorL1Start = "//         Compte à Rebours        ";
+let constructorL1End = "\\\\\n";
+let constructorL2Start = "\\\\";
+let constructorL2End = "";
 
 T.post('statuses/update', { status: status}, function(err, data, response) {
   status = 100000;
   id = data.id_str;
-  console.log("started");
+  status_string = status.toString();
+  console.log("initialized");
 })
 
-setInterval(vingtMinutes, 1000*nombre);
+setInterval(twentyMinutes, 1000*time);
 
-function vingtMinutes() {
+function twentyMinutes() {
   T.post('statuses/update', { status: status }, function(err, data, response) {
+
+    id = data.id_str;
+    console.log('worked ' + status);
     status--;
-    var id = data.id;
-    console.log('worked');
+    status_string = status.toString();
   })
+  let nb = (34 - status_string.length%2 - status_string.length)/2
+  for (let tmp = nb ; tmp>0 ; tmp--) {
+    constructorL2Start += space;
+  }
 }
 
 
@@ -54,7 +67,7 @@ function vingtMinutes() {
 
 
 
-// var nombre = 1;
+// let nombre = 1;
 // // setInterval(hehe, 1000*1);
 // function hehe() {
 
@@ -67,8 +80,8 @@ function vingtMinutes() {
 // T.get('search/tweets', params, gotData);
 //
 // function gotData(err, data, response) {
-//   // var tweets = data.statuses;
-//   // for (var i = 0; i < tweets.length; i++) {
+//   // let tweets = data.statuses;
+//   // for (let i = 0; i < tweets.length; i++) {
 //   //   console.log(tweets[i].text);
 //   // }
 //   console.log("wokk");
